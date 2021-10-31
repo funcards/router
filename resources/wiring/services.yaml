@@ -1,0 +1,19 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  router.collector.factory:
+    class: FC\Router\Collector\RouteCollectorFactory
+
+  router.loader.attribute:
+    class: FC\Router\Loader\AttributeLoader
+
+  FC\Router\Collector\RouteCollectorFactoryInterface: '@router.collector.factory'
+  FC\Router\Loader\LoaderInterface: '@router.loader.attribute'
+  FC\Router\Generator\UrlGeneratorInterface: '@FC\Router\RouterInterface'
+  FC\Router\Matcher\UriMatcherInterface: '@FC\Router\RouterInterface'
+
+  FC\Router\Command\RouteDebugCommand:
+    tags:
+      - { name: 'console.command', command: 'debug:route' }
