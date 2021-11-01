@@ -24,10 +24,10 @@ interface RouteInterface
     public function getName(): string;
 
     /**
-     * @param string $name
+     * @param string|null $name
      * @return RouteInterface
      */
-    public function setName(string $name): RouteInterface;
+    public function setName(?string $name): RouteInterface;
 
     /**
      * @return string

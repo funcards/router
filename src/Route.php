@@ -69,9 +69,9 @@ class Route implements RouteInterface
     /**
      * {@inheritDoc}
      */
-    public function setName(string $name): RouteInterface
+    public function setName(?string $name): RouteInterface
     {
-        Assert::that($name)->notEmpty();
+        Assert::that($name)->nullOr()->notEmpty();
 
         $this->name = $name;
 
