@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FC\Router\Middleware;
 
-use FC\Router\Exception\RouteMethodNotAllowedException;
-use FC\Router\Exception\RouteNotFoundException;
+use FC\Router\Exception\RouterMethodNotAllowedException;
+use FC\Router\Exception\RouterNotFoundException;
 use FC\Router\Matcher\Result;
 use FC\Router\RouteInterface;
 use FC\Router\RouterInterface;
@@ -28,8 +28,8 @@ class RouterMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $request = $this->withResult($request);
-        $request = $this->withRoute($request);
+        $request = $this->match($request);
+        $request = $this->resolveRoute($request);
 
         return $handler->handle($request);
     }
@@ -38,7 +38,7 @@ class RouterMiddleware implements MiddlewareInterface
      * @param ServerRequestInterface $request
      * @return ServerRequestInterface
      */
-    protected function withResult(ServerRequestInterface $request): ServerRequestInterface
+    protected function match(ServerRequestInterface $request): ServerRequestInterface
     {
         $result = $this->router->match($request->getMethod(), $request->getUri()->getPath());
         return $request->withAttribute(Result::class, $result);
@@ -48,21 +48,21 @@ class RouterMiddleware implements MiddlewareInterface
      * @param ServerRequestInterface $request
      * @return ServerRequestInterface
      */
-    protected function withRoute(ServerRequestInterface $request): ServerRequestInterface
+    protected function resolveRoute(ServerRequestInterface $request): ServerRequestInterface
     {
         /** @var Result $result */
         $result = $request->getAttribute(Result::class);
 
         switch ($result->getStatus()) {
             case Result::NOT_FOUND:
-                throw RouteNotFoundException::new(\sprintf('Route for "%s" not found', $request->getUri()->getPath()));
+                throw RouterNotFoundException::new(\sprintf('Route for "%s" not found', $request->getUri()->getPath()));
             case Result::METHOD_NOT_ALLOWED:
                 $message = \sprintf(
                     'Method "%s" not allowed, allowed methods: %s',
                     $result->getMethod(),
                     \implode(', ', $result->getAllowedMethods())
                 );
-                throw RouteMethodNotAllowedException::new($message);
+                throw RouterMethodNotAllowedException::new($message, $result->getAllowedMethods());
         }
 
         return $request->withAttribute(RouteInterface::class, $result->getRoute());

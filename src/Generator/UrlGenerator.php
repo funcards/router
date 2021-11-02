@@ -6,7 +6,7 @@ namespace FC\Router\Generator;
 
 use Assert\Assert;
 use FC\Router\Exception\InvalidUrlDataException;
-use FC\Router\Exception\RouteNotFoundException;
+use FC\Router\Exception\RouterNotFoundException;
 use FC\Router\RouteCollectionInterface;
 use Psr\Http\Message\UriInterface;
 
@@ -27,7 +27,7 @@ class UrlGenerator implements UrlGeneratorInterface
         Assert::that($routeName)->notEmpty('RouteName should not be empty');
 
         if (null === ($route = $this->routeCollection->get($routeName))) {
-            throw RouteNotFoundException::new(\sprintf('Route "%s" not found.', $routeName));
+            throw RouterNotFoundException::new(\sprintf('Route "%s" not found.', $routeName));
         }
 
         $segments = [];

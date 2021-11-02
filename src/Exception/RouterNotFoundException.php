@@ -6,7 +6,7 @@ namespace FC\Router\Exception;
 
 use JetBrains\PhpStorm\Pure;
 
-final class RouteNotFoundException extends \RuntimeException implements RouteException
+final class RouterNotFoundException extends \RuntimeException implements RouterException
 {
     /**
      * @param string $message

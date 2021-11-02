@@ -6,7 +6,7 @@ namespace FC\Router\Exception;
 
 use JetBrains\PhpStorm\Pure;
 
-final class RouteMethodNotAllowedException extends \RuntimeException implements RouteException
+final class ResolveMethodArgumentException extends \RuntimeException implements RouterException
 {
     /**
      * @param string $message
@@ -15,6 +15,6 @@ final class RouteMethodNotAllowedException extends \RuntimeException implements 
     #[Pure]
     public static function new(string $message): self
     {
-        return new self($message, 405);
+        return new self($message);
     }
 }

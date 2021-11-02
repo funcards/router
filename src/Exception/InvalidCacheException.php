@@ -6,7 +6,7 @@ namespace FC\Router\Exception;
 
 use JetBrains\PhpStorm\Pure;
 
-final class InvalidCacheException extends \RuntimeException implements RouteException
+final class InvalidCacheException extends \RuntimeException implements RouterException
 {
     /**
      * @param string $cacheFile
