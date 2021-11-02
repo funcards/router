@@ -17,12 +17,11 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class ControllerMiddleware implements MiddlewareInterface
 {
-    public const CONTROLLER = 'controller';
-
     /**
      * @param ContainerInterface $container
+     * @param string $attributeName
      */
-    public function __construct(protected ContainerInterface $container)
+    public function __construct(protected ContainerInterface $container, protected string $attributeName)
     {
     }
 
@@ -55,7 +54,7 @@ class ControllerMiddleware implements MiddlewareInterface
         try {
             $reflectionMethod = new \ReflectionMethod($service, $method);
             $arguments = $this->resolveArguments($reflectionMethod, $request);
-            return $request->withAttribute(static::CONTROLLER, [$service, $method, $arguments]);
+            return $request->withAttribute($this->attributeName, [$service, $method, $arguments]);
         } catch (\ReflectionException $e) {
             throw ControllerMethodNotFoundException::new(
                 \sprintf('Method "%s" for controller "%s" not found', $method, $service::class),
