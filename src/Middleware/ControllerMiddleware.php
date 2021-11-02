@@ -67,7 +67,7 @@ class ControllerMiddleware implements MiddlewareInterface
     /**
      * @param \ReflectionMethod $reflectionMethod
      * @param ServerRequestInterface $request
-     * @return array
+     * @return array<string, mixed>
      * @throws \ReflectionException
      */
     protected function resolveArguments(\ReflectionMethod $reflectionMethod, ServerRequestInterface $request): array
